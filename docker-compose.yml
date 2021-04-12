@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=guava_inn
+      - POSTGRES_DB=guava_inn_development
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+
+  web:
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid || true && rails db:prepare && rake db:migrate && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/myapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+volumes:
+  postgres:
