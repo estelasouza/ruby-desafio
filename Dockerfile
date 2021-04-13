@@ -6,4 +6,7 @@ WORKDIR /myapp
 COPY . /myapp
 RUN gem update --system
 RUN bundle install && gem install bundler --conservative && bundle check && yarn
+RUN wget https://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_linux64.zip
+RUN unzip chromedriver_linux64.zip
+ENV PATH="/myapp:${PATH}"
 CMD ["rails", "server"]
