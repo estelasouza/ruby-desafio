@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Rooms', type: :system do
   before do
-    driven_by(:selenium_chrome_headless)
+    driven_by(:selenium_chrome)
   end
 
   describe 'listing' do
