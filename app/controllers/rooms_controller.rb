@@ -6,21 +6,25 @@ class RoomsController < ApplicationController
     @occ = []
     cont_week = 0 
     cont_month = 0 
-
+    @occupation_week_global = 0
+    @occupation_month_global = 0
     for i in Room.all
       @occ.push(occupation_time(i.id,8))
       cont_week =( occupation_time(i.id,8)).to_i + cont_week
       @occ.push(occupation_time(i.id,31))
       cont_month = (occupation_time(i.id,31)).to_i + cont_month
     end
-    
-    @occupation_week_global = cont_week / (@occ.size/2)
-    @occupation_month_global = cont_month / (@occ.size/2)
+    if cont_week != 0
+      @occupation_week_global = cont_week / (@occ.size/2)
+      @occupation_month_global = cont_month / (@occ.size/2)
+    end
   end
 
   def show
+
     @occupation_week = occupation_time(params[:id],8)
     @occupation_month =  occupation_time(params[:id],31)
+
   end
 
   def new
@@ -69,8 +73,12 @@ class RoomsController < ApplicationController
             cont = (oc.end_date - oc.start_date).to_i + cont
           end
         end
+        if cont > 0 
         occupation = cont*100/days
         return occupation
+        else 
+          return 0
+        end
       end
     end
 
